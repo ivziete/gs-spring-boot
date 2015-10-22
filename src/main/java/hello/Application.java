@@ -3,6 +3,8 @@ package hello;
 import java.util.Arrays;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.system.ApplicationPidFileWriter;
+import org.springframework.boot.actuate.system.EmbeddedServerPortFileWriter;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
@@ -10,8 +12,11 @@ import org.springframework.context.ApplicationContext;
 public class Application {
     
     public static void main(String[] args) {
-        ApplicationContext ctx = SpringApplication.run(Application.class, args);
-        
+        //ApplicationContext ctx = SpringApplication.run(Application.class, args);
+        SpringApplication sa=new SpringApplication(Application.class);
+        sa.addListeners(new ApplicationPidFileWriter());
+        sa.addListeners(new EmbeddedServerPortFileWriter());
+        ApplicationContext ctx = sa.run(args);
         System.out.println("Let's inspect the beans provided by Spring Boot:");
         
         String[] beanNames = ctx.getBeanDefinitionNames();
